@@ -4,6 +4,8 @@ describe("Moves", function() {
   var remaining = [1,2,3,4,5,6,7,8,9];
   var xMoves = [];
   var yMoves = [];
+  var move1 = 1;
+  var move2 = 7;
 
   beforeEach(function() {
     moves = new Moves();
@@ -23,6 +25,27 @@ describe("Moves", function() {
       expect(moves.getOMoves()).toEqual(yMoves);
     });
 
+  });
+
+  describe("#play", function () {
+
+    beforeEach(function() {
+      moves.play(move1);
+      moves.play(move2);
+    });
+
+    it("the first turn should push a move into the xMoves array", function() {
+      expect(moves.getXMoves()).toContain(move1);
+    });
+
+    it("the 2nd move should push a move into the oMoves array", function() {
+      expect(moves.getOMoves()).toContain(move2);
+    });
+
+    it("both moves should be removed from the remaining array", function() {
+      expect(moves.getRemainingMoves()).not.toContain(move1);
+      expect(moves.getRemainingMoves()).not.toContain(move2);
+    });
   });
 
 });
