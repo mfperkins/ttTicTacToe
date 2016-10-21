@@ -27,6 +27,19 @@ describe("Moves", function() {
 
   });
 
+  describe("#checkTurn", function() {
+
+    it("should return true if it's X's go", function() {
+      expect(moves.checkTurn()).toEqual(true);
+    });
+
+    it("should return false if it's O's go", function() {
+      moves.play(move1);
+      expect(moves.checkTurn()).toEqual(undefined);
+    });
+
+  });
+
   describe("#play", function () {
 
     beforeEach(function() {
