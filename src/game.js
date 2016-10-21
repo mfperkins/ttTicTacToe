@@ -1,7 +1,6 @@
 function Game() {
   this._winners = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]];
   this._moves = (typeof moves !== 'undefined') ?  moves : new Moves();
-  this._turn = (this._moves.checkTurn() === true) ? "X" : "O";
 }
 
 Game.prototype = {
@@ -12,10 +11,15 @@ Game.prototype = {
 
   move: function (number) {
     this._moves.play(number);
-    if (this._isGameOver() !== undefined ) { return this._isGameOver(); }
     var turn = (this._moves.checkTurn() === true) ? "X" : "O";
-    var movesToCheck = (this._moves.checkTurn() === true) ? this._moves.getXMoves() : this._moves.getOMoves();
-    if (this._isWinner(movesToCheck) === true) { return turn + " is the winner!";}
+    var result = this._isWinner(this._movesToCheck(turn));
+    if (result === true) { return turn + " is the winner!";}
+    if (this._isGameOver() !== undefined ) { return this._isGameOver(); }
+  },
+
+  _movesToCheck: function (turn) {
+    var theMoves = (turn === "X") ? this._moves.getXMoves() : this._moves.getOMoves();
+    return theMoves.sort();
   },
 
   _isGameOver: function() {
@@ -25,19 +29,18 @@ Game.prototype = {
   _isWinner: function(movesToCheck) {
     var gotAWinner;
     this._winners.forEach(function (winner) {
-      for (var i = 0; i < winner.length;) {
-        winningMoves = [];
-        for (var j = 0; j < movesToCheck.length; ) {
+      var i, j;
+      winningMoves = [];
+      for (i = 0, j = 0; i < winner.length && j < movesToCheck.length;) {
           if (winner[i] < movesToCheck[j]) {
-            ++i;
+            i++;
           } else if (winner[i] == movesToCheck[j]) {
             winningMoves.push(movesToCheck[i]);
             if (winningMoves.length === 3) { gotAWinner = true; }
-            ++i; ++j;
+            i++; j++;
           } else {
             return false;
           }
-        }
       }
     });
     return gotAWinner;

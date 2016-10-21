@@ -21,7 +21,7 @@ describe("Game", function() {
 
     beforeEach(function() {
       moves.getRemainingMoves.and.returnValue([3,6,8,9]);
-      moves.getXMoves.and.returnValue([1,4,7]);
+      moves.getXMoves.and.returnValue([4,1,7]);
       moves.getOMoves.and.returnValue([2,5]);
       moves.checkTurn.and.returnValue(true);
     });
@@ -43,7 +43,7 @@ describe("Game", function() {
     beforeEach(function() {
       moves.getRemainingMoves.and.returnValue([4,6,7]);
       moves.getXMoves.and.returnValue([1,9,3]);
-      moves.getOMoves.and.returnValue([2,5,8]);
+      moves.getOMoves.and.returnValue([8,2,5]);
       moves.checkTurn.and.returnValue(false);
     });
 
@@ -57,11 +57,14 @@ describe("Game", function() {
   describe("#moves producing Game Over", function () {
 
     beforeEach(function(){
+      moves.getXMoves.and.returnValue([1,3,4,8,9]);
+      moves.getOMoves.and.returnValue([2,5,6,7]);
+      moves.checkTurn.and.returnValue(false);
       moves.getRemainingMoves.and.returnValue([]);
     });
 
     it("should declare 'Game Over' if movesRemaining === 0", function () {
-      expect(game.move(someMoves[0])).toEqual("Game Over");
+      expect(game.move(9)).toEqual("Game Over");
     });
 
   });
